@@ -10,8 +10,6 @@ public interface BookService {
 
   Author findAuthor(String name);
 
-  AuthorInfo getAuthorInfo(String name);
-
   List<Author> getAllAuthors();
 
   List<Book> getBooksForAuthor(String authorName);
@@ -20,5 +18,5 @@ public interface BookService {
 
   List<Book> findBooksWrittenIn(String country);
 
-
+  AuthorInfo getAuthorInfo(String name);
 }
