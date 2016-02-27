@@ -57,4 +57,11 @@ public class BetterBookServiceTest extends BookServiceTest {
   public void testFindAuthorsActiveAfter() {
     super.testFindAuthorsActiveAfter();
   }
+
+  @Test
+  @Ignore
+  @Override
+  public void findAuthorByBook() {
+    super.findAuthorByBook();
+  }
 }

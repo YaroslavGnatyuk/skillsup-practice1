@@ -51,4 +51,9 @@ public class BetterBookService implements BookService {
   public List<Author> findAuthorsActiveAfter(LocalDate when) {
     throw new UnsupportedOperationException("");
   }
+
+  @Override
+  public Author findAuthorByBook(String bookTitle) {
+    throw new UnsupportedOperationException("");
+  }
 }

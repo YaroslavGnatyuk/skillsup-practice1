@@ -220,6 +220,11 @@ public class SimpleBookService implements BookService {
     }
   }
 
+  @Override
+  public Author findAuthorByBook(String bookTitle) {
+    throw new UnsupportedOperationException();
+  }
+
   private static Book readBook(ResultSet resultSet) throws SQLException {
     final Book book = new Book();
     book.setId(resultSet.getInt("id"));

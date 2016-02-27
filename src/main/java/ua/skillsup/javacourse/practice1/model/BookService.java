@@ -40,6 +40,11 @@ public interface BookService {
   List<Author> findAuthorsActiveAfter(LocalDate when);
 
   /**
+   * Find author who wrote a book with given title
+   */
+  Author findAuthorByBook(String bookTitle);
+
+  /**
    * Get basic author information: number of books, number of languages he wrote in, date of last
    * published book.
    */

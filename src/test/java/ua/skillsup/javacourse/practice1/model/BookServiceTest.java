@@ -147,4 +147,16 @@ public abstract class BookServiceTest {
     assertTrue(authors.stream().anyMatch(a -> a.getName().equals("Frank Herbert")));
     assertTrue(authors.stream().anyMatch(a -> a.getName().equals("Vladimir Nabokov")));
   }
+
+  @Test
+  public void findAuthorByBook() {
+
+    final Author tolkien = bookService.findAuthorByBook("Hobbit");
+    assertNotNull(tolkien);
+    assertEquals("John Ronald Reuel Tolkien", tolkien.getName());
+
+    final Author steinbeck = bookService.findAuthorByBook("Of Mice and Men");
+    assertNotNull(steinbeck);
+    assertEquals("John Steinbeck", steinbeck.getName());
+  }
 }
