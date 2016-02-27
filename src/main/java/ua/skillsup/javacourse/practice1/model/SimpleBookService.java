@@ -220,9 +220,24 @@ public class SimpleBookService implements BookService {
     }
   }
 
+  private static final String AUTHOR_FIND_BY_BOOK =
+      "SELECT a.* " +
+      "FROM authors a RIGHT JOIN books b ON a.id = b.author_id " +
+      "WHERE b.title LIKE ?";
+
   @Override
   public Author findAuthorByBook(String bookTitle) {
-    throw new UnsupportedOperationException();
+    try (final Connection conn = newConnection();
+         final PreparedStatement pst = conn.prepareStatement(AUTHOR_FIND_BY_BOOK)) {
+
+      pst.setObject(1, '%' + bookTitle + '%');
+      final ResultSet resultSet = pst.executeQuery();
+
+      return resultSet.next() ? readAuthor(resultSet) : null;
+
+    } catch (SQLException e) {
+      throw new DbException("Db read error", e);
+    }
   }
 
   private static Book readBook(ResultSet resultSet) throws SQLException {
