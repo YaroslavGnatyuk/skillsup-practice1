@@ -50,4 +50,11 @@ public class BetterBookServiceTest extends BookServiceTest {
   public void testGetAuthorInfo() {
     super.testGetAuthorInfo();
   }
+
+  @Test
+  @Ignore
+  @Override
+  public void testFindAuthorsActiveAfter() {
+    super.testFindAuthorsActiveAfter();
+  }
 }

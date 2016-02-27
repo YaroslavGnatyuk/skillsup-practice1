@@ -75,7 +75,7 @@ public abstract class BookServiceTest {
 
   @Test
   public void testFindAuthorByName() throws Exception {
-    final Author herbert = bookService.findAuthor("Herbert");
+    final Author herbert = bookService.findAuthorByName("Herbert");
 
     assertNotNull(herbert);
     assertEquals("Frank Herbert", herbert.getName());
@@ -84,7 +84,7 @@ public abstract class BookServiceTest {
   @Test
   public void testLoadBooks() throws Exception {
 
-    final Author steinbeck = bookService.findAuthor("Steinbeck");
+    final Author steinbeck = bookService.findAuthorByName("Steinbeck");
 
     final List<Book> booksByAuthor = bookService.getBooksForAuthor(steinbeck);
     final List<Book> booksByAuthorName = bookService.getBooksForAuthor("Steinbeck");
@@ -127,5 +127,24 @@ public abstract class BookServiceTest {
     assertEquals(3, nabokovInfo.getBooksCount());
     assertEquals(2, nabokovInfo.getLangCount());
     assertEquals(LocalDate.parse("1957-01-01"), nabokovInfo.getLastBook());
+
+    final AuthorInfo zabolotskyInfo = bookService.getAuthorInfo("Zabolotsky");
+
+    assertNotNull(zabolotskyInfo);
+
+    assertEquals(0, zabolotskyInfo.getBooksCount());
+    assertEquals(0, zabolotskyInfo.getLangCount());
+    assertNull(zabolotskyInfo.getLastBook());
+  }
+
+  @Test
+  public void testFindAuthorsActiveAfter() {
+    final List<Author> authors =
+        bookService.findAuthorsActiveAfter(LocalDate.parse("1950-01-01"));
+
+    assertEquals(2, authors.size());
+
+    assertTrue(authors.stream().anyMatch(a -> a.getName().equals("Frank Herbert")));
+    assertTrue(authors.stream().anyMatch(a -> a.getName().equals("Vladimir Nabokov")));
   }
 }

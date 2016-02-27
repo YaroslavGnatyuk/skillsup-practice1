@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class AuthorInfo {
 
   private final Author author;
+
   private final int booksCount;
   private final LocalDate lastBook;
   private final int langCount;

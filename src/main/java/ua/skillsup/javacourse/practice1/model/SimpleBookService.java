@@ -1,11 +1,13 @@
 package ua.skillsup.javacourse.practice1.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class SimpleBookService implements BookService {
       "WHERE name LIKE ?";
 
   @Override
-  public Author findAuthor(String name) {
+  public Author findAuthorByName(String name) {
     try (final Connection conn = newConnection();
          final PreparedStatement pst = conn.prepareStatement(AUTHOR_FIND_BY_NAME)) {
 
@@ -186,6 +188,32 @@ public class SimpleBookService implements BookService {
           sqlToLocalDate(resultSet.getDate("lastBook")),
           resultSet.getInt("langCount")
       ) : null;
+
+    } catch (SQLException e) {
+      throw new DbException("Db read error", e);
+    }
+  }
+
+  private static final String AUTHORS_FIND_ACTIVE_AFTER =
+      "SELECT a.* " +
+      "FROM authors a RIGHT JOIN books b ON a.id = b.author_id " +
+      "GROUP BY (a.id) " +
+      "HAVING max(b.published) >= ?";
+
+  @Override
+  public List<Author> findAuthorsActiveAfter(LocalDate when) {
+    try (final Connection conn = newConnection();
+         final PreparedStatement pst = conn.prepareStatement(AUTHORS_FIND_ACTIVE_AFTER)) {
+
+      pst.setDate(1, Date.valueOf(when));
+      final ResultSet resultSet = pst.executeQuery();
+
+      final List<Author> authors = new ArrayList<>();
+      while (resultSet.next()) {
+        authors.add(readAuthor(resultSet));
+      }
+
+      return unmodifiableList(authors);
 
     } catch (SQLException e) {
       throw new DbException("Db read error", e);
