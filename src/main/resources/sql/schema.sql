@@ -10,13 +10,15 @@ CREATE TABLE authors (
 
 CREATE TABLE books (
   -- id SERIAL PRIMARY KEY
-  id                INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id                INTEGER               AUTO_INCREMENT PRIMARY KEY,
   title             VARCHAR(100) NOT NULL,
   author_id         INTEGER,
   original_language VARCHAR(20),
   isbn              VARCHAR(20),
   published         DATE         NOT NULL,
   abstract          VARCHAR(1000),
+  avg_rating        REAL,
+  reviews_count     INTEGER      NOT NULL DEFAULT 0,
   FOREIGN KEY (author_id) REFERENCES authors (id) ON DELETE CASCADE
 );
 
@@ -61,46 +63,57 @@ INSERT INTO authors (id, name, birthday, death, country, notes) VALUES
 
 ALTER TABLE authors ALTER COLUMN id RESTART WITH 8;
 
-INSERT INTO books (title, author_id, original_language, isbn, published, abstract) VALUES
+INSERT INTO books (title, author_id, original_language, isbn, published, abstract, avg_rating, reviews_count)
+VALUES
   ('Nineteen Eighty-Four', 1,
    'English', '978-0-547-24964-3', '1949-06-08',
-   'Nineteen Eighty-Four, often published as 1984, is a dystopian novel by English author George Orwell published in 1949. The novel is set in Airstrip One (formerly known as Great Britain), a province of the superstate Oceania in a world of perpetual war, omnipresent government surveillance and public manipulation, dictated by a political system euphemistically named English Socialism (or Ingsoc in the government''s invented language, Newspeak) under the control of a privileged elite of the Inner Party, that persecutes individualism and independent thinking as "thoughtcrime."'),
+   'Nineteen Eighty-Four, often published as 1984, is a dystopian novel by English author George Orwell published in 1949. The novel is set in Airstrip One (formerly known as Great Britain), a province of the superstate Oceania in a world of perpetual war, omnipresent government surveillance and public manipulation, dictated by a political system euphemistically named English Socialism (or Ingsoc in the government''s invented language, Newspeak) under the control of a privileged elite of the Inner Party, that persecutes individualism and independent thinking as "thoughtcrime."',
+   4.7, 20),
 
   ('Animal Farm', 1,
    'English', '978-0-452-28424-1', '1945-08-17',
-   'Animal Farm is an allegorical and dystopian novella by George Orwell, first published in England on 17 August 1945. According to Orwell, the book reflects events leading up to the Russian Revolution of 1917 and then on into the Stalinist era of the Soviet Union. Orwell, a democratic socialist, was a critic of Joseph Stalin and hostile to Moscow-directed Stalinism, an attitude that was critically shaped by his experiences during the Spanish Civil War.'),
+   'Animal Farm is an allegorical and dystopian novella by George Orwell, first published in England on 17 August 1945. According to Orwell, the book reflects events leading up to the Russian Revolution of 1917 and then on into the Stalinist era of the Soviet Union. Orwell, a democratic socialist, was a critic of Joseph Stalin and hostile to Moscow-directed Stalinism, an attitude that was critically shaped by his experiences during the Spanish Civil War.',
+   4.2, 7),
 
   ('Dune', 2,
    'English', NULL, '1965-08-01',
-   'Dune is a 1965 epic science fiction novel by Frank Herbert. It tied with Roger Zelazny''s This Immortal for the Hugo Award in 1966, and it won the inaugural Nebula Award for Best Novel. It is the first installment of the Dune saga, and in 2003 was cited as the world''s best-selling science fiction novel.'),
+   'Dune is a 1965 epic science fiction novel by Frank Herbert. It tied with Roger Zelazny''s This Immortal for the Hugo Award in 1966, and it won the inaugural Nebula Award for Best Novel. It is the first installment of the Dune saga, and in 2003 was cited as the world''s best-selling science fiction novel.',
+   4.1, 9),
 
   ('The Grapes of Wrath', 3,
    'English', NULL, '1939-04-14',
-   'The Grapes of Wrath is an American realist novel written by John Steinbeck and published in 1939. The book won the National Book Award and Pulitzer Prize for fiction, and it was cited prominently when Steinbeck was awarded the Nobel Prize in 1962.'),
+   'The Grapes of Wrath is an American realist novel written by John Steinbeck and published in 1939. The book won the National Book Award and Pulitzer Prize for fiction, and it was cited prominently when Steinbeck was awarded the Nobel Prize in 1962.',
+   4.5, 11),
 
   ('Of Mice and Men', 3,
    'English', NULL, '1937-01-01',
-   'Of Mice and Men is a novella written by author John Steinbeck. Published in 1937, it tells the story of George Milton and Lennie Small, two displaced migrant ranch workers, who move from place to place in California in search of new job opportunities during the Great Depression in the United States.'),
+   'Of Mice and Men is a novella written by author John Steinbeck. Published in 1937, it tells the story of George Milton and Lennie Small, two displaced migrant ranch workers, who move from place to place in California in search of new job opportunities during the Great Depression in the United States.',
+   3.8, 3),
 
   ('The Forest Song', 5,
    'Ukrainian', NULL, '1914-01-01',
-   'Féerie by famous Ukrainian poet Lesya Ukrainka, which treats the conflict between lofty idealism and the prosaic details of everyday life.'),
+   'Féerie by famous Ukrainian poet Lesya Ukrainka, which treats the conflict between lofty idealism and the prosaic details of everyday life.',
+   3.5, 3),
 
   ('Mashen''ka', 6,
    'Russian', NULL, '1926-01-01',
-   'Mashen''ka is the debut novel by Vladimir Nabokov, first published under pen name V. Sirin in 1926 by the Russian language publisher "Slovo".'),
+   'Mashen''ka is the debut novel by Vladimir Nabokov, first published under pen name V. Sirin in 1926 by the Russian language publisher "Slovo".',
+   NULL, 0),
 
   ('Lolita', 6,
    'English', NULL, '1955-01-01',
-   'Lolita is a novel by Vladimir Nabokov, written in English and published in 1955 in Paris, in 1958 in New York City, and in 1959 in London. It was later translated by its Russian-native author into Russian.'),
+   'Lolita is a novel by Vladimir Nabokov, written in English and published in 1955 in Paris, in 1958 in New York City, and in 1959 in London. It was later translated by its Russian-native author into Russian.',
+   4.4, 17),
 
   ('Pnin', 6,
    'English', NULL, '1957-01-01',
-   'Pnin is Vladimir Nabokov''s 13th novel and his fourth written in English; it was published in 1957. The success of Pnin in the United States would launch Nabokov''s career into literary prominence.'),
+   'Pnin is Vladimir Nabokov''s 13th novel and his fourth written in English; it was published in 1957. The success of Pnin in the United States would launch Nabokov''s career into literary prominence.',
+   3.2, 8),
 
   ('The Hobbit', 7,
    'English', NULL, '1937-02-21',
-   'The Hobbit, or There and Back Again is a fantasy novel and children''s book by English author J. R. R. Tolkien. It was published on 21 September 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children''s literature.');
+   'The Hobbit, or There and Back Again is a fantasy novel and children''s book by English author J. R. R. Tolkien. It was published on 21 September 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children''s literature.',
+   4.4, 16);
 
 
 

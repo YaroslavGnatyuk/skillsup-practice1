@@ -33,6 +33,12 @@ public class Book {
   @Column("abstract")
   private String summary;
 
+  @Column("avg_rating")
+  private Double avgRating;
+
+  @Column("reviews_count")
+  private Integer reviewsCount;
+
   public Integer getId() {
     return id;
   }
@@ -87,6 +93,22 @@ public class Book {
 
   public void setSummary(String summary) {
     this.summary = summary;
+  }
+
+  public Double getAvgRating() {
+    return avgRating;
+  }
+
+  public void setAvgRating(Double avgRating) {
+    this.avgRating = avgRating;
+  }
+
+  public Integer getReviewsCount() {
+    return reviewsCount;
+  }
+
+  public void setReviewsCount(Integer reviewsCount) {
+    this.reviewsCount = reviewsCount;
   }
 
   @Override

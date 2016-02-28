@@ -103,6 +103,9 @@ public abstract class BookServiceTest {
     assertNull(theGrapesOfWrath.getIsbn());
     assertEquals(LocalDate.parse("1939-04-14"), theGrapesOfWrath.getPublished());
     assertTrue(theGrapesOfWrath.getSummary().contains("The Grapes of Wrath"));
+    assertEquals(4.5, theGrapesOfWrath.getAvgRating(), 0);
+    assertEquals(11, theGrapesOfWrath.getReviewsCount().intValue());
+
   }
 
   @Test
