@@ -161,10 +161,11 @@ public class Book {
   public String toString() {
     return "Book{" +
            "title='" + title + '\'' +
+           ", id='" + id + '\'' +
            ", originalLanguage='" + originalLanguage + '\'' +
            ", isbn='" + isbn + '\'' +
            ", published=" + published +
-           ", summary='" + summary + '\'' +
+//           ", summary='" + summary + '\'' +
            '}';
   }
 }

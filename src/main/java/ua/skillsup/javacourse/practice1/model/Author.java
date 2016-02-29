@@ -124,10 +124,11 @@ public class Author {
   public String toString() {
     return "Author{" +
            "name='" + name + '\'' +
+           ", id='" + id + '\'' +
            ", birthday=" + birthday +
            ", death=" + death +
            ", country='" + country + '\'' +
-           ", notes='" + notes + '\'' +
+//           ", notes='" + notes + '\'' +
            '}';
   }
 }
