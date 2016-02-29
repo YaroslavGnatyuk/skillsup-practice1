@@ -252,7 +252,7 @@ public class SimpleBookService implements BookService {
     book.setIsbn(resultSet.getString("isbn"));
     book.setPublished(resultSet.getDate("published").toLocalDate());
     book.setSummary(resultSet.getString("abstract"));
-    book.setAvgRating(resultSet.getDouble("avg_rating"));
+    book.setAvgRating(resultSet.getFloat("avg_rating"));
     book.setReviewsCount(resultSet.getInt("reviews_count"));
 
     return book;
