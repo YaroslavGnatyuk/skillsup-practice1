@@ -33,6 +33,12 @@ public class Book {
   @Column("abstract")
   private String summary;
 
+  @Column("avg_rating")
+  private Double avgRating;
+
+  @Column("reviews_count")
+  private Integer reviewsCount;
+
   public Integer getId() {
     return id;
   }
@@ -89,6 +95,22 @@ public class Book {
     this.summary = summary;
   }
 
+  public Double getAvgRating() {
+    return avgRating;
+  }
+
+  public void setAvgRating(Double avgRating) {
+    this.avgRating = avgRating;
+  }
+
+  public Integer getReviewsCount() {
+    return reviewsCount;
+  }
+
+  public void setReviewsCount(Integer reviewsCount) {
+    this.reviewsCount = reviewsCount;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,10 +161,11 @@ public class Book {
   public String toString() {
     return "Book{" +
            "title='" + title + '\'' +
+           ", id='" + id + '\'' +
            ", originalLanguage='" + originalLanguage + '\'' +
            ", isbn='" + isbn + '\'' +
            ", published=" + published +
-           ", summary='" + summary + '\'' +
+//           ", summary='" + summary + '\'' +
            '}';
   }
 }

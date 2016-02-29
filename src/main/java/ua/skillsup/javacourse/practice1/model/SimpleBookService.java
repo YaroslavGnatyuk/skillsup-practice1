@@ -85,7 +85,15 @@ public class SimpleBookService implements BookService {
   }
 
   private static final String BOOK_FIND_BY_AUTHOR =
-      "SELECT id, title, author_id, original_language, isbn, published, abstract " +
+      "SELECT id, "
+      + "title, "
+      + "author_id, "
+      + "original_language, "
+      + "isbn, "
+      + "published, "
+      + "abstract, "
+      + "avg_rating, "
+      + "reviews_count " +
       "FROM books WHERE author_id = ?";
 
   @Override
@@ -109,7 +117,15 @@ public class SimpleBookService implements BookService {
   }
 
   private static final String BOOK_FIND_BY_AUTHOR_NAME =
-      "SELECT id, title, author_id, original_language, isbn, published, abstract " +
+      "SELECT id, "
+      + "title, "
+      + "author_id, "
+      + "original_language, "
+      + "isbn, "
+      + "published, "
+      + "abstract, "
+      + "avg_rating, "
+      + "reviews_count " +
       "FROM books WHERE author_id IN ("
       + "SELECT id FROM authors WHERE name LIKE ?" +
       ")";
@@ -141,7 +157,9 @@ public class SimpleBookService implements BookService {
       + "b.original_language original_language, "
       + "b.isbn isbn, "
       + "b.published published, "
-      + "b.abstract abstract " +
+      + "b.abstract abstract, "
+      + "b.avg_rating avg_rating, "
+      + "b.reviews_count reviews_count " +
       "FROM books b LEFT JOIN authors a ON b.author_id = a.id " +
       "WHERE a.country = ?";
 
@@ -249,6 +267,8 @@ public class SimpleBookService implements BookService {
     book.setIsbn(resultSet.getString("isbn"));
     book.setPublished(resultSet.getDate("published").toLocalDate());
     book.setSummary(resultSet.getString("abstract"));
+    book.setAvgRating(resultSet.getDouble("avg_rating"));
+    book.setReviewsCount(resultSet.getInt("reviews_count"));
 
     return book;
   }
