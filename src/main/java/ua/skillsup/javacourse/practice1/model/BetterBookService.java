@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ua.skillsup.javacourse.practice1.db.DbProps;
+import ua.skillsup.javacourse.practice1.db.DbReader;
 
 /**
  * @author leopold
@@ -11,15 +12,17 @@ import ua.skillsup.javacourse.practice1.db.DbProps;
  */
 public class BetterBookService implements BookService {
 
-  private final DbProps dbProps;
+  //  private final DbProps dbProps;
+  private final DbReader<Author> authorReader;
 
   public BetterBookService(DbProps dbProps) {
-    this.dbProps = dbProps;
+    this.authorReader = new DbReader<>(Author.class, dbProps);
   }
 
   @Override
   public Author findAuthorByName(String name) {
-    throw new UnsupportedOperationException("");
+    // an example of using DbReader.
+    return authorReader.readFirst("name = ?", name);
   }
 
   @Override
