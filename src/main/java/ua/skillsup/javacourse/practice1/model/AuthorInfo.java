@@ -37,4 +37,14 @@ public class AuthorInfo {
   public int getLangCount() {
     return langCount;
   }
+
+  @Override
+  public String toString() {
+    return "AuthorInfo{" +
+           "author=" + author +
+           ", booksCount=" + booksCount +
+           ", lastBook=" + lastBook +
+           ", langCount=" + langCount +
+           '}';
+  }
 }
