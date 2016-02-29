@@ -19,34 +19,6 @@ public class BetterBookServiceTest extends BookServiceTest {
   @Test
   @Ignore
   @Override
-  public void testLoadAuthors() throws Exception {
-    super.testLoadAuthors();
-  }
-
-  @Test
-  @Ignore
-  @Override
-  public void testFindAuthorByName() throws Exception {
-    super.testFindAuthorByName();
-  }
-
-  @Test
-  @Ignore
-  @Override
-  public void testLoadBooks() throws Exception {
-    super.testLoadBooks();
-  }
-
-  @Test
-  @Ignore
-  @Override
-  public void testFindBooksWrittenIn() throws Exception {
-    super.testFindBooksWrittenIn();
-  }
-
-  @Test
-  @Ignore
-  @Override
   public void testGetAuthorInfo() {
     super.testGetAuthorInfo();
   }

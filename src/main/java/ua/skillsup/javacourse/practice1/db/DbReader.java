@@ -1,9 +1,18 @@
 package ua.skillsup.javacourse.practice1.db;
 
-import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author leopold
@@ -11,23 +20,35 @@ import java.util.Map;
  */
 public class DbReader<T> {
 
-  private final Class<T> clazz;
-  private final Map<String, Field> fields;
-  private final String tableName;
+  private final DbClassAccessor<T> classAccessor;
   private final DbProps dbProps;
 
   public DbReader(Class<T> clazz, DbProps dbProps) {
-    this.clazz = clazz;
+    this.classAccessor = new DbClassAccessor<T>(clazz);
     this.dbProps = dbProps;
+  }
 
-    // todo: fill this fields by processing @Column and @Table annotations of the class.
-    this.tableName = null;
-    this.fields = Collections.emptyMap();
+  public List<T> readAll() {
+    return readList(null);
   }
 
   public List<T> readList(String where, Object... params) {
-    // todo: needs to be implemented using reflection API.
-    throw new UnsupportedOperationException();
+
+    final List<String> sqlColumns = classAccessor.getSqlFields();
+
+    final StringBuilder sqlBuilder = new StringBuilder("SELECT ");
+    sqlBuilder.append(sqlColumns.stream().collect(Collectors.joining(", ")));
+    sqlBuilder.append(" FROM ").append(classAccessor.getTableName());
+
+    if (where != null) {
+      sqlBuilder.append(" WHERE ").append(where);
+    }
+
+    final List<Map<String, Object>> result = doQuery(sqlBuilder.toString(), sqlColumns, params);
+
+    return result.stream()
+        .map(classAccessor::mapFields)
+        .collect(toList());
   }
 
   public T readSingle(String where, Object params) {
@@ -47,4 +68,36 @@ public class DbReader<T> {
     return readSingle("id = ?", id);
   }
 
+
+  private List<Map<String, Object>> doQuery(String query, List<String> columns, Object... params) {
+    try (final Connection conn = DriverManager
+        .getConnection(dbProps.url(), dbProps.user(), dbProps.password());
+         final PreparedStatement pst = conn.prepareStatement(query)) {
+      if (params != null) {
+        for (int i = 0; i < params.length; i++) {
+          pst.setObject(i + 1, params[i]);
+        }
+      }
+
+      final ResultSet resultSet = pst.executeQuery();
+
+      final ArrayList<Map<String, Object>> objects = new ArrayList<>();
+
+      while (resultSet.next()) {
+
+        final HashMap<String, Object> objectHashMap = new HashMap<>();
+
+        for (String column : columns) {
+          objectHashMap.put(column, resultSet.getObject(column));
+        }
+
+        objects.add(Collections.unmodifiableMap(objectHashMap));
+
+      }
+
+      return objects;
+    } catch (SQLException e) {
+      throw new DbException("Error reading SQL", e);
+    }
+  }
 }

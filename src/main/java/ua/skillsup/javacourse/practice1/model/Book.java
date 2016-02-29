@@ -21,7 +21,7 @@ public class Book {
   @Column("author_id")
   private Integer authorId;
 
-  @Column
+  @Column("original_language")
   private String originalLanguage;
 
   @Column
@@ -34,7 +34,7 @@ public class Book {
   private String summary;
 
   @Column("avg_rating")
-  private Double avgRating;
+  private Float avgRating;
 
   @Column("reviews_count")
   private Integer reviewsCount;
@@ -95,11 +95,11 @@ public class Book {
     this.summary = summary;
   }
 
-  public Double getAvgRating() {
+  public Float getAvgRating() {
     return avgRating;
   }
 
-  public void setAvgRating(Double avgRating) {
+  public void setAvgRating(Float avgRating) {
     this.avgRating = avgRating;
   }
 

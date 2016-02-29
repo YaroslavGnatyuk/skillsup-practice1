@@ -15,6 +15,7 @@ import ua.skillsup.javacourse.practice1.db.DbException;
 import ua.skillsup.javacourse.practice1.db.DbProps;
 
 import static java.util.Collections.unmodifiableList;
+import static ua.skillsup.javacourse.practice1.db.DbUtils.likeParam;
 import static ua.skillsup.javacourse.practice1.db.DbUtils.sqlToLocalDate;
 
 /**
@@ -135,7 +136,7 @@ public class SimpleBookService implements BookService {
     try (final Connection conn = newConnection();
          final PreparedStatement pst = conn.prepareStatement(BOOK_FIND_BY_AUTHOR_NAME)) {
 
-      pst.setString(1, '%' + authorName + '%');
+      pst.setObject(1, likeParam(authorName));
 
       final ResultSet resultSet = pst.executeQuery();
       final List<Book> books = new ArrayList<>();
@@ -267,7 +268,7 @@ public class SimpleBookService implements BookService {
     book.setIsbn(resultSet.getString("isbn"));
     book.setPublished(resultSet.getDate("published").toLocalDate());
     book.setSummary(resultSet.getString("abstract"));
-    book.setAvgRating(resultSet.getDouble("avg_rating"));
+    book.setAvgRating(resultSet.getFloat("avg_rating"));
     book.setReviewsCount(resultSet.getInt("reviews_count"));
 
     return book;

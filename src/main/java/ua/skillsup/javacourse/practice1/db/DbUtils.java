@@ -15,4 +15,8 @@ public final class DbUtils {
   public static LocalDate sqlToLocalDate(Date sqlDate) {
     return sqlDate == null ? null : sqlDate.toLocalDate();
   }
+
+  public static String likeParam(String param) {
+    return '%' + param + '%';
+  }
 }

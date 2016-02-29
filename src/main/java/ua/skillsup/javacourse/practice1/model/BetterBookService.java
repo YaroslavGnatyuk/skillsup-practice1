@@ -5,6 +5,9 @@ import java.util.List;
 
 import ua.skillsup.javacourse.practice1.db.DbProps;
 import ua.skillsup.javacourse.practice1.db.DbReader;
+import ua.skillsup.javacourse.practice1.db.DbUtils;
+
+import static ua.skillsup.javacourse.practice1.db.DbUtils.likeParam;
 
 /**
  * @author leopold
@@ -14,35 +17,39 @@ public class BetterBookService implements BookService {
 
   //  private final DbProps dbProps;
   private final DbReader<Author> authorReader;
+  private final DbReader<Book> bookDbReader;
 
   public BetterBookService(DbProps dbProps) {
     this.authorReader = new DbReader<>(Author.class, dbProps);
+    this.bookDbReader = new DbReader<>(Book.class, dbProps);
   }
 
   @Override
   public Author findAuthorByName(String name) {
     // an example of using DbReader.
-    return authorReader.readFirst("name = ?", name);
+    return authorReader.readFirst("name LIKE ?", '%' + name + '%');
   }
 
   @Override
   public List<Author> getAllAuthors() {
-    throw new UnsupportedOperationException("");
+    return authorReader.readAll();
   }
 
   @Override
   public List<Book> getBooksForAuthor(Author author) {
-    throw new UnsupportedOperationException("");
+    return bookDbReader.readList("author_id = ?", author.getId());
   }
 
   @Override
   public List<Book> getBooksForAuthor(String authorName) {
-    throw new UnsupportedOperationException("");
+    return bookDbReader.readList("author_id IN (SELECT id FROM authors WHERE name LIKE ?)",
+                                 likeParam(authorName));
   }
 
   @Override
   public List<Book> findBooksWrittenIn(String country) {
-    throw new UnsupportedOperationException("");
+    return bookDbReader
+        .readList("author_id IN (SELECT id FROM authors WHERE country = ?)", country);
   }
 
   @Override
