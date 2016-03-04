@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
  * @author leopold
  * @since 27/02/16
  */
-public abstract class BookServiceTest {
+public class BookServiceTest {
 
   private static DbProps dbProps;
-  private BookService bookService;
-
-  protected abstract BookService createBookService(DbProps dbProps);
+  private BookDao bookDao;
+//
+//  protected abstract BookService createBookService(DbProps dbProps);
 
   @BeforeClass
   public static void initProps() throws IOException {
@@ -42,7 +42,7 @@ public abstract class BookServiceTest {
         "classpath:sql/schema.sql", Charset.forName("UTF-8"), false
     );
 
-    bookService = createBookService(dbProps);
+    bookDao = new SimpleBookDao(dbProps);
   }
 
   @After
@@ -56,7 +56,7 @@ public abstract class BookServiceTest {
   @Test
   public void testLoadAuthors() throws Exception {
 
-    final List<Author> allAuthors = bookService.getAllAuthors();
+    final List<Author> allAuthors = bookDao.getAllAuthors();
     assertEquals(7, allAuthors.size());
 
     final Author steinbeck = allAuthors.stream()
@@ -75,7 +75,7 @@ public abstract class BookServiceTest {
 
   @Test
   public void testFindAuthorByName() throws Exception {
-    final Author herbert = bookService.findAuthorByName("Herbert");
+    final Author herbert = bookDao.findAuthorByName("Herbert");
 
     assertNotNull(herbert);
     assertEquals("Frank Herbert", herbert.getName());
@@ -84,10 +84,10 @@ public abstract class BookServiceTest {
   @Test
   public void testLoadBooks() throws Exception {
 
-    final Author steinbeck = bookService.findAuthorByName("Steinbeck");
+    final Author steinbeck = bookDao.findAuthorByName("Steinbeck");
 
-    final List<Book> booksByAuthor = bookService.getBooksForAuthor(steinbeck);
-    final List<Book> booksByAuthorName = bookService.getBooksForAuthor("Steinbeck");
+    final List<Book> booksByAuthor = bookDao.getBooksForAuthor(steinbeck);
+    final List<Book> booksByAuthorName = bookDao.getBooksForAuthor("Steinbeck");
 
     assertEquals(booksByAuthor, booksByAuthorName);
     assertEquals(2, booksByAuthor.size());
@@ -110,7 +110,7 @@ public abstract class BookServiceTest {
 
   @Test
   public void testFindBooksWrittenIn() throws Exception {
-    final List<Book> ukBooks = bookService.findBooksWrittenIn("UK");
+    final List<Book> ukBooks = bookDao.findBooksWrittenIn("UK");
 
     assertEquals(3, ukBooks.size());
 
@@ -122,7 +122,7 @@ public abstract class BookServiceTest {
 
   @Test
   public void testGetAuthorInfo() {
-    final AuthorInfo nabokovInfo = bookService.getAuthorInfo("Nabokov");
+    final AuthorInfo nabokovInfo = bookDao.getAuthorInfo("Nabokov");
 
     assertNotNull(nabokovInfo);
     assertEquals("Vladimir Nabokov", nabokovInfo.getAuthor().getName());
@@ -131,7 +131,7 @@ public abstract class BookServiceTest {
     assertEquals(2, nabokovInfo.getLangCount());
     assertEquals(LocalDate.parse("1957-01-01"), nabokovInfo.getLastBook());
 
-    final AuthorInfo zabolotskyInfo = bookService.getAuthorInfo("Zabolotsky");
+    final AuthorInfo zabolotskyInfo = bookDao.getAuthorInfo("Zabolotsky");
 
     assertNotNull(zabolotskyInfo);
 
@@ -143,7 +143,7 @@ public abstract class BookServiceTest {
   @Test
   public void testFindAuthorsActiveAfter() {
     final List<Author> authors =
-        bookService.findAuthorsActiveAfter(LocalDate.parse("1950-01-01"));
+        bookDao.findAuthorsActiveAfter(LocalDate.parse("1950-01-01"));
 
     assertEquals(2, authors.size());
 
@@ -154,11 +154,11 @@ public abstract class BookServiceTest {
   @Test
   public void findAuthorByBook() {
 
-    final Author tolkien = bookService.findAuthorByBook("Hobbit");
+    final Author tolkien = bookDao.findAuthorByBook("Hobbit");
     assertNotNull(tolkien);
     assertEquals("John Ronald Reuel Tolkien", tolkien.getName());
 
-    final Author steinbeck = bookService.findAuthorByBook("Of Mice and Men");
+    final Author steinbeck = bookDao.findAuthorByBook("Of Mice and Men");
     assertNotNull(steinbeck);
     assertEquals("John Steinbeck", steinbeck.getName());
   }

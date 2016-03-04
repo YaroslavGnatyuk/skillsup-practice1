@@ -40,7 +40,7 @@ public class DbClassAccessor<T> {
     try {
       object = dbClass.newInstance();
     } catch (InstantiationException | IllegalAccessException e) {
-      throw new DbException("Cannon instatiate " + dbClass, e);
+      throw new DbException("Cannon instantiate " + dbClass, e);
     }
 
     fields.forEach((column, value) -> {
@@ -74,7 +74,7 @@ public class DbClassAccessor<T> {
             DbClassAccessor::getColumnName, // key
             Function.identity(), // value
             (f1, f2) -> {
-              throw new DbException("Dublicate keys: " + f1);
+              throw new DbException("Duplicate keys: " + f1);
             },
             LinkedHashMap::new
         ));

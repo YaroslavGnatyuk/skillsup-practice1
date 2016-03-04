@@ -5,7 +5,6 @@ import java.util.List;
 
 import ua.skillsup.javacourse.practice1.db.DbProps;
 import ua.skillsup.javacourse.practice1.db.DbReader;
-import ua.skillsup.javacourse.practice1.db.DbUtils;
 
 import static ua.skillsup.javacourse.practice1.db.DbUtils.likeParam;
 
@@ -13,7 +12,7 @@ import static ua.skillsup.javacourse.practice1.db.DbUtils.likeParam;
  * @author leopold
  * @since 27/02/16
  */
-public class BetterBookService implements BookService {
+public class BetterBookService implements BookDao {
 
   //  private final DbProps dbProps;
   private final DbReader<Author> authorReader;
@@ -26,7 +25,6 @@ public class BetterBookService implements BookService {
 
   @Override
   public Author findAuthorByName(String name) {
-    // an example of using DbReader.
     return authorReader.readFirst("name LIKE ?", '%' + name + '%');
   }
 

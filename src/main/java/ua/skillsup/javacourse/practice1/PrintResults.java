@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import ua.skillsup.javacourse.practice1.db.DbProps;
-import ua.skillsup.javacourse.practice1.model.SimpleBookService;
+import ua.skillsup.javacourse.practice1.model.SimpleBookDao;
 
 /**
  * @author leopold
@@ -21,7 +21,7 @@ public class PrintResults {
     RunScript.execute(dbProps.url(), dbProps.user(), dbProps.password(),
                       "classpath:sql/schema.sql", Charset.forName("UTF-8"), false);
 
-    final SimpleBookService bookService = new SimpleBookService(dbProps);
+    final SimpleBookDao bookService = new SimpleBookDao(dbProps);
 
     printResult(
         bookService.findBooksWrittenIn("Russia")

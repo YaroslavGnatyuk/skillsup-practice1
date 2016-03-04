@@ -24,7 +24,7 @@ public class DbReader<T> {
   private final DbProps dbProps;
 
   public DbReader(Class<T> clazz, DbProps dbProps) {
-    this.classAccessor = new DbClassAccessor<T>(clazz);
+    this.classAccessor = new DbClassAccessor<>(clazz);
     this.dbProps = dbProps;
   }
 
@@ -68,7 +68,6 @@ public class DbReader<T> {
     return readSingle("id = ?", id);
   }
 
-
   private List<Map<String, Object>> doQuery(String query, List<String> columns, Object... params) {
     try (final Connection conn = DriverManager
         .getConnection(dbProps.url(), dbProps.user(), dbProps.password());
@@ -85,13 +84,13 @@ public class DbReader<T> {
 
       while (resultSet.next()) {
 
-        final HashMap<String, Object> objectHashMap = new HashMap<>();
+        final HashMap<String, Object> fieldsMap = new HashMap<>();
 
         for (String column : columns) {
-          objectHashMap.put(column, resultSet.getObject(column));
+          fieldsMap.put(column, resultSet.getObject(column));
         }
 
-        objects.add(Collections.unmodifiableMap(objectHashMap));
+        objects.add(Collections.unmodifiableMap(fieldsMap));
 
       }
 

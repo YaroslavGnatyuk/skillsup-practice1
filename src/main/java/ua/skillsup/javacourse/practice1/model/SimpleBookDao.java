@@ -23,11 +23,11 @@ import static ua.skillsup.javacourse.practice1.db.DbUtils.sqlToLocalDate;
  * @since 27/02/16
  */
 @SuppressWarnings("SqlResolve")
-public class SimpleBookService implements BookService {
+public class SimpleBookDao implements BookDao {
 
   private final DbProps dbProps;
 
-  public SimpleBookService(DbProps dbProps) {
+  public SimpleBookDao(DbProps dbProps) {
     this.dbProps = dbProps;
   }
 

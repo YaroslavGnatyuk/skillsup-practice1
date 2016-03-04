@@ -7,7 +7,7 @@ import java.util.List;
  * @author leopold
  * @since 27/02/16
  */
-public interface BookService {
+public interface BookDao {
 
   /**
    * Find author by name.
